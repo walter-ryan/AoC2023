@@ -1,4 +1,4 @@
-with open('./05/test.txt','r') as file:
+with open('./05/input.txt','r') as file:
     lines = file.readlines()
 
 def runSeed(seed):
@@ -12,16 +12,14 @@ def runSeed(seed):
     return transformationHistory[-1]
 
 def stepBack(pointList, stage):
-    newPointList = []
+    newPointList = set()
     for map in transformations[stage]:
-        print(map[1])
-        newPointList.append(map[1])
+        newPointList.add(map[1])
         for point in pointList:
-            map =  transformations[stage]
             newValue = point
             if (map[0] + map[2]) <= point < (map[1] + map[2]):
                     newValue = point - (map[2])
-            newPointList.append(newValue)
+            newPointList.add(newValue)
     return newPointList
 
 p1seeds = [int(n) for n in lines[0][7:].split()]
@@ -41,11 +39,12 @@ for line in lines[2:]:
 
 
 ### CREATE A LIST OF SEEDS TO TEST
-pointList = []
-for stage in list(range(len(transformations))):
-    print("stage = ",stage)
+pointList = {0}
+stages = list(range(len(transformations)))
+stages.reverse()
+for stage in stages:
     pointList = stepBack(pointList,stage)
-    print("success")
+
 
 
 
@@ -58,14 +57,14 @@ for seed in p1seeds:
 print("Minimum location for part 1:",minLoc)
 minLoc = float('inf')
 
-# print("total Seeds to test:", len(seedsToRun))
-# for i in range(len(seedsToRun)):
-#     print("Start:", seedsToRun[i], "End:", seedsToRun[i])
-#     seed = p2seedStart[i]
-#     while seed < p2seedStart[i] + p2seedEnd[i]:
-#         newLoc = runSeed(seed)
-#         if newLoc < minLoc:
-#             minLoc = newLoc
-#         seed += 1
+print("total Seeds to test:", len(pointList))
+
+seedsToRun = list(pointList)
+seedsToRun.sort()
+res = {}
+for i in range(len(seedsToRun)):
+    seed = seedsToRun[i]
+    res[seed] = runSeed(seed)
+print(res)
 
 print("Minimum location for part 2:",minLoc)
