@@ -4,7 +4,6 @@ with open('./09/input.txt','r') as file:
 def deriv(seqStack):
     prev = seqStack[-1]
     nextLine = [prev[i+1]-prev[i] for i in range(len(prev)-1)]
-
     return nextLine
 
 seqs = []
@@ -31,9 +30,5 @@ for seq in seqs:
     totNext += next
     totPrev += prev
 
-
-
-
 # print('Sum of next values:',totNext)
 print('Sum of previous values:',totPrev)
-
